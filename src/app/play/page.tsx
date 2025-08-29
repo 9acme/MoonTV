@@ -111,7 +111,11 @@ function PlayPageClient() {
     needPreferRef.current = needPrefer;
   }, [needPrefer]);
   // 集数相关
-  const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState(0);
+  const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState(() => {
+    // 从地址栏获取cur参数，如果没有则默认为0
+    const curParam = searchParams.get('cur');
+    return curParam ? Math.max(0, parseInt(curParam) - 1) : 0;
+  });
 
   const currentSourceRef = useRef(currentSource);
   const currentIdRef = useRef(currentId);
@@ -588,10 +592,31 @@ function PlayPageClient() {
     }
   }
 
+  // 更新页面标题
+  const updatePageTitle = (title: string, episodeIndex: number) => {
+    if (title) {
+      const episodeNumber = (episodeIndex + 1).toString().padStart(3, '0');
+      const newTitle = `${title}${episodeNumber}`;
+      document.title = newTitle;
+    }
+  };
+
+  // 更新URL参数
+  const updateUrlParams = (episodeIndex: number) => {
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set('cur', (episodeIndex + 1).toString());
+    window.history.replaceState({}, '', newUrl.toString());
+  };
+
   // 当集数索引变化时自动更新视频地址
   useEffect(() => {
     updateVideoUrl(detail, currentEpisodeIndex);
-  }, [detail, currentEpisodeIndex]);
+    // 更新页面标题和URL参数
+    if (videoTitle) {
+      updatePageTitle(videoTitle, currentEpisodeIndex);
+      updateUrlParams(currentEpisodeIndex);
+    }
+  }, [detail, currentEpisodeIndex, videoTitle]);
 
   // 进入页面时直接获取全部源信息
   useEffect(() => {
@@ -727,6 +752,10 @@ function PlayPageClient() {
       newUrl.searchParams.set('year', detailData.year);
       newUrl.searchParams.set('title', detailData.title);
       newUrl.searchParams.delete('prefer');
+      // 确保cur参数存在
+      if (!newUrl.searchParams.has('cur')) {
+        newUrl.searchParams.set('cur', '1');
+      }
       window.history.replaceState({}, '', newUrl.toString());
 
       setLoadingStage('ready');
@@ -863,6 +892,7 @@ function PlayPageClient() {
       newUrl.searchParams.set('source', newSource);
       newUrl.searchParams.set('id', newId);
       newUrl.searchParams.set('year', newDetail.year);
+      newUrl.searchParams.set('cur', (targetIndex + 1).toString());
       window.history.replaceState({}, '', newUrl.toString());
 
       setVideoTitle(newDetail.title || newTitle);
@@ -1197,9 +1227,7 @@ function PlayPageClient() {
     // 非WebKit浏览器且播放器已存在，使用switch方法切换
     if (!isWebkit && artPlayerRef.current) {
       artPlayerRef.current.switch = videoUrl;
-      artPlayerRef.current.title = `${videoTitle} - 第${
-        currentEpisodeIndex + 1
-      }集`;
+      artPlayerRef.current.title = `${videoTitle}${currentEpisodeIndex + 1}`;
       artPlayerRef.current.poster = videoCover;
       if (artPlayerRef.current?.video) {
         ensureVideoSource(
