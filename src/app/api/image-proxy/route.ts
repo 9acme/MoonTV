@@ -5,7 +5,7 @@ import { getConfig } from '@/lib/config';
 export const runtime = 'edge';
 
 // 豆瓣图片域名正则表达式 - 匹配所有 *.doubanio.com 子域名
-const DOUBAN_IMAGE_REGEX = /^https?:\/\/([^\/]+\.)?doubanio\.com\//i;
+const DOUBAN_IMAGE_REGEX = /^https?:\/\/([^/]+\.)?doubanio\.com\//i;
 
 // OrionTV 兼容接口
 export async function GET(request: Request) {
