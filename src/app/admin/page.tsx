@@ -60,6 +60,7 @@ interface SiteConfig {
   ImageProxy: string;
   DoubanProxy: string;
   DisableYellowFilter: boolean;
+  ProxyDoubanImagesOnly: boolean;
 }
 
 // 视频源数据类型
@@ -312,9 +313,8 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
         </h4>
         <div className='flex items-center justify-between'>
           <label
-            className={`text-gray-700 dark:text-gray-300 ${
-              isD1Storage || isUpstashStorage ? 'opacity-50' : ''
-            }`}
+            className={`text-gray-700 dark:text-gray-300 ${isD1Storage || isUpstashStorage ? 'opacity-50' : ''
+              }`}
           >
             允许新用户注册
             {isD1Storage && (
@@ -335,22 +335,19 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
               toggleAllowRegister(!userSettings.enableRegistration)
             }
             disabled={isD1Storage || isUpstashStorage}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 ${
-              userSettings.enableRegistration
-                ? 'bg-green-600'
-                : 'bg-gray-200 dark:bg-gray-700'
-            } ${
-              isD1Storage || isUpstashStorage
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 ${userSettings.enableRegistration
+              ? 'bg-green-600'
+              : 'bg-gray-200 dark:bg-gray-700'
+              } ${isD1Storage || isUpstashStorage
                 ? 'opacity-50 cursor-not-allowed'
                 : ''
-            }`}
+              }`}
           >
             <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                userSettings.enableRegistration
-                  ? 'translate-x-6'
-                  : 'translate-x-1'
-              }`}
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${userSettings.enableRegistration
+                ? 'translate-x-6'
+                : 'translate-x-1'
+                }`}
             />
           </button>
         </div>
@@ -530,28 +527,26 @@ const UserConfig = ({ config, role, refreshConfig }: UserConfigProps) => {
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap'>
                           <span
-                            className={`px-2 py-1 text-xs rounded-full ${
-                              user.role === 'owner'
-                                ? 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-300'
-                                : user.role === 'admin'
+                            className={`px-2 py-1 text-xs rounded-full ${user.role === 'owner'
+                              ? 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-300'
+                              : user.role === 'admin'
                                 ? 'bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-300'
                                 : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-                            }`}
+                              }`}
                           >
                             {user.role === 'owner'
                               ? '站长'
                               : user.role === 'admin'
-                              ? '管理员'
-                              : '普通用户'}
+                                ? '管理员'
+                                : '普通用户'}
                           </span>
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap'>
                           <span
-                            className={`px-2 py-1 text-xs rounded-full ${
-                              !user.banned
-                                ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300'
-                                : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300'
-                            }`}
+                            className={`px-2 py-1 text-xs rounded-full ${!user.banned
+                              ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300'
+                              : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300'
+                              }`}
                           >
                             {!user.banned ? '正常' : '已封禁'}
                           </span>
@@ -802,11 +797,10 @@ const VideoSourceConfig = ({
         </td>
         <td className='px-6 py-4 whitespace-nowrap max-w-[1rem]'>
           <span
-            className={`px-2 py-1 text-xs rounded-full ${
-              !source.disabled
-                ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300'
-                : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300'
-            }`}
+            className={`px-2 py-1 text-xs rounded-full ${!source.disabled
+              ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300'
+              : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300'
+              }`}
           >
             {!source.disabled ? '启用中' : '已禁用'}
           </span>
@@ -814,11 +808,10 @@ const VideoSourceConfig = ({
         <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2'>
           <button
             onClick={() => handleToggleEnable(source.key)}
-            className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium ${
-              !source.disabled
-                ? 'bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900/60'
-                : 'bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/60'
-            } transition-colors`}
+            className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium ${!source.disabled
+              ? 'bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900/60'
+              : 'bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/60'
+              } transition-colors`}
           >
             {!source.disabled ? '禁用' : '启用'}
           </button>
@@ -1125,11 +1118,10 @@ const CategoryConfig = ({
         className='hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors select-none'
       >
         <td
-          className={`px-2 py-4 ${
-            isD1Storage || isUpstashStorage
-              ? 'text-gray-200'
-              : 'cursor-grab text-gray-400'
-          }`}
+          className={`px-2 py-4 ${isD1Storage || isUpstashStorage
+            ? 'text-gray-200'
+            : 'cursor-grab text-gray-400'
+            }`}
           style={{ touchAction: 'none' }}
           {...(isD1Storage || isUpstashStorage
             ? {}
@@ -1142,11 +1134,10 @@ const CategoryConfig = ({
         </td>
         <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100'>
           <span
-            className={`px-2 py-1 text-xs rounded-full ${
-              category.type === 'movie'
-                ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300'
-                : 'bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-300'
-            }`}
+            className={`px-2 py-1 text-xs rounded-full ${category.type === 'movie'
+              ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300'
+              : 'bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-300'
+              }`}
           >
             {category.type === 'movie' ? '电影' : '电视剧'}
           </span>
@@ -1159,11 +1150,10 @@ const CategoryConfig = ({
         </td>
         <td className='px-6 py-4 whitespace-nowrap max-w-[1rem]'>
           <span
-            className={`px-2 py-1 text-xs rounded-full ${
-              !category.disabled
-                ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300'
-                : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300'
-            }`}
+            className={`px-2 py-1 text-xs rounded-full ${!category.disabled
+              ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300'
+              : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300'
+              }`}
           >
             {!category.disabled ? '启用中' : '已禁用'}
           </span>
@@ -1176,13 +1166,12 @@ const CategoryConfig = ({
               handleToggleEnable(category.query, category.type)
             }
             disabled={isD1Storage || isUpstashStorage}
-            className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium ${
-              isD1Storage || isUpstashStorage
-                ? 'bg-gray-400 cursor-not-allowed text-white'
-                : !category.disabled
+            className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium ${isD1Storage || isUpstashStorage
+              ? 'bg-gray-400 cursor-not-allowed text-white'
+              : !category.disabled
                 ? 'bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900/60'
                 : 'bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/60'
-            } transition-colors`}
+              } transition-colors`}
           >
             {!category.disabled ? '禁用' : '启用'}
           </button>
@@ -1229,11 +1218,10 @@ const CategoryConfig = ({
             !isD1Storage && !isUpstashStorage && setShowAddForm(!showAddForm)
           }
           disabled={isD1Storage || isUpstashStorage}
-          className={`px-3 py-1 text-sm rounded-lg transition-colors ${
-            isD1Storage || isUpstashStorage
-              ? 'bg-gray-400 cursor-not-allowed text-white'
-              : 'bg-green-600 hover:bg-green-700 text-white'
-          }`}
+          className={`px-3 py-1 text-sm rounded-lg transition-colors ${isD1Storage || isUpstashStorage
+            ? 'bg-gray-400 cursor-not-allowed text-white'
+            : 'bg-green-600 hover:bg-green-700 text-white'
+            }`}
         >
           {showAddForm ? '取消' : '添加分类'}
         </button>
@@ -1358,6 +1346,7 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
     ImageProxy: '',
     DoubanProxy: '',
     DisableYellowFilter: false,
+    ProxyDoubanImagesOnly: false,
   });
   // 保存状态
   const [saving, setSaving] = useState(false);
@@ -1377,6 +1366,7 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
         ImageProxy: config.SiteConfig.ImageProxy || '',
         DoubanProxy: config.SiteConfig.DoubanProxy || '',
         DisableYellowFilter: config.SiteConfig.DisableYellowFilter || false,
+        ProxyDoubanImagesOnly: config.SiteConfig.ProxyDoubanImagesOnly || false,
       });
     }
   }, [config]);
@@ -1417,9 +1407,8 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
       {/* 站点名称 */}
       <div>
         <label
-          className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${
-            isD1Storage || isUpstashStorage ? 'opacity-50' : ''
-          }`}
+          className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${isD1Storage || isUpstashStorage ? 'opacity-50' : ''
+            }`}
         >
           站点名称
           {isD1Storage && (
@@ -1442,20 +1431,18 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
             setSiteSettings((prev) => ({ ...prev, SiteName: e.target.value }))
           }
           disabled={isD1Storage || isUpstashStorage}
-          className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-            isD1Storage || isUpstashStorage
-              ? 'opacity-50 cursor-not-allowed'
-              : ''
-          }`}
+          className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent ${isD1Storage || isUpstashStorage
+            ? 'opacity-50 cursor-not-allowed'
+            : ''
+            }`}
         />
       </div>
 
       {/* 站点公告 */}
       <div>
         <label
-          className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${
-            isD1Storage || isUpstashStorage ? 'opacity-50' : ''
-          }`}
+          className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${isD1Storage || isUpstashStorage ? 'opacity-50' : ''
+            }`}
         >
           站点公告
           {isD1Storage && (
@@ -1481,11 +1468,10 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
           }
           disabled={isD1Storage || isUpstashStorage}
           rows={3}
-          className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-            isD1Storage || isUpstashStorage
-              ? 'opacity-50 cursor-not-allowed'
-              : ''
-          }`}
+          className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent ${isD1Storage || isUpstashStorage
+            ? 'opacity-50 cursor-not-allowed'
+            : ''
+            }`}
         />
       </div>
 
@@ -1530,9 +1516,8 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
       {/* 图片代理 */}
       <div>
         <label
-          className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${
-            isD1Storage || isUpstashStorage ? 'opacity-50' : ''
-          }`}
+          className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${isD1Storage || isUpstashStorage ? 'opacity-50' : ''
+            }`}
         >
           图片代理前缀
           {isD1Storage && (
@@ -1559,11 +1544,10 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
             }))
           }
           disabled={isD1Storage || isUpstashStorage}
-          className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-            isD1Storage || isUpstashStorage
-              ? 'opacity-50 cursor-not-allowed'
-              : ''
-          }`}
+          className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent ${isD1Storage || isUpstashStorage
+            ? 'opacity-50 cursor-not-allowed'
+            : ''
+            }`}
         />
         <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
           用于代理图片访问，解决跨域或访问限制问题。留空则不使用代理。
@@ -1573,9 +1557,8 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
       {/* 豆瓣代理设置 */}
       <div>
         <label
-          className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${
-            isD1Storage || isUpstashStorage ? 'opacity-50' : ''
-          }`}
+          className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${isD1Storage || isUpstashStorage ? 'opacity-50' : ''
+            }`}
         >
           豆瓣代理地址
           {isD1Storage && (
@@ -1602,11 +1585,10 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
             }))
           }
           disabled={isD1Storage || isUpstashStorage}
-          className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-            isD1Storage || isUpstashStorage
-              ? 'opacity-50 cursor-not-allowed'
-              : ''
-          }`}
+          className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent ${isD1Storage || isUpstashStorage
+            ? 'opacity-50 cursor-not-allowed'
+            : ''
+            }`}
         />
         <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
           用于代理豆瓣数据访问，解决跨域或访问限制问题。留空则使用服务端API。
@@ -1617,9 +1599,8 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
       <div>
         <div className='flex items-center justify-between'>
           <label
-            className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${
-              isD1Storage || isUpstashStorage ? 'opacity-50' : ''
-            }`}
+            className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${isD1Storage || isUpstashStorage ? 'opacity-50' : ''
+              }`}
           >
             禁用黄色过滤器
             {isD1Storage && (
@@ -1644,22 +1625,19 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
               }))
             }
             disabled={isD1Storage || isUpstashStorage}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 ${
-              siteSettings.DisableYellowFilter
-                ? 'bg-green-600'
-                : 'bg-gray-200 dark:bg-gray-700'
-            } ${
-              isD1Storage || isUpstashStorage
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 ${siteSettings.DisableYellowFilter
+              ? 'bg-green-600'
+              : 'bg-gray-200 dark:bg-gray-700'
+              } ${isD1Storage || isUpstashStorage
                 ? 'opacity-50 cursor-not-allowed'
                 : ''
-            }`}
+              }`}
           >
             <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                siteSettings.DisableYellowFilter
-                  ? 'translate-x-6'
-                  : 'translate-x-1'
-              }`}
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${siteSettings.DisableYellowFilter
+                ? 'translate-x-6'
+                : 'translate-x-1'
+                }`}
             />
           </button>
         </div>
@@ -1673,11 +1651,10 @@ const SiteConfigComponent = ({ config }: { config: AdminConfig | null }) => {
         <button
           onClick={handleSave}
           disabled={saving}
-          className={`px-4 py-2 ${
-            saving
-              ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-green-600 hover:bg-green-700'
-          } text-white rounded-lg transition-colors`}
+          className={`px-4 py-2 ${saving
+            ? 'bg-gray-400 cursor-not-allowed'
+            : 'bg-green-600 hover:bg-green-700'
+            } text-white rounded-lg transition-colors`}
         >
           {saving ? '保存中…' : '保存'}
         </button>

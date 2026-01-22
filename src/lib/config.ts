@@ -203,6 +203,7 @@ async function initConfig() {
             DoubanProxy: process.env.NEXT_PUBLIC_DOUBAN_PROXY || '',
             DisableYellowFilter:
               process.env.NEXT_PUBLIC_DISABLE_YELLOW_FILTER === 'true',
+            ProxyDoubanImagesOnly: false,
           },
           UserConfig: {
             AllowRegister: process.env.NEXT_PUBLIC_ENABLE_REGISTER === 'true',
@@ -251,6 +252,7 @@ async function initConfig() {
         DoubanProxy: process.env.NEXT_PUBLIC_DOUBAN_PROXY || '',
         DisableYellowFilter:
           process.env.NEXT_PUBLIC_DISABLE_YELLOW_FILTER === 'true',
+        ProxyDoubanImagesOnly: false,
       },
       UserConfig: {
         AllowRegister: process.env.NEXT_PUBLIC_ENABLE_REGISTER === 'true',
@@ -440,6 +442,7 @@ export async function resetConfig() {
       DoubanProxy: process.env.NEXT_PUBLIC_DOUBAN_PROXY || '',
       DisableYellowFilter:
         process.env.NEXT_PUBLIC_DISABLE_YELLOW_FILTER === 'true',
+      ProxyDoubanImagesOnly: false,
     },
     UserConfig: {
       AllowRegister: process.env.NEXT_PUBLIC_ENABLE_REGISTER === 'true',
@@ -456,12 +459,12 @@ export async function resetConfig() {
     CustomCategories:
       storageType === 'redis'
         ? customCategories?.map((category) => ({
-            name: category.name,
-            type: category.type,
-            query: category.query,
-            from: 'config',
-            disabled: false,
-          })) || []
+          name: category.name,
+          type: category.type,
+          query: category.query,
+          from: 'config',
+          disabled: false,
+        })) || []
         : [],
   } as AdminConfig;
 

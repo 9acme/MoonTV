@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 
+import { getConfig } from '@/lib/config';
+
 export const runtime = 'edge';
+
+// 豆瓣图片域名正则表达式 - 匹配所有 *.doubanio.com 子域名
+const DOUBAN_IMAGE_REGEX = /^https?:\/\/([^\/]+\.)?doubanio\.com\//i;
 
 // OrionTV 兼容接口
 export async function GET(request: Request) {
@@ -12,6 +17,19 @@ export async function GET(request: Request) {
   }
 
   try {
+    // 获取配置,检查是否启用"只代理豆瓣图片"
+    const config = await getConfig();
+
+    if (config.SiteConfig.ProxyDoubanImagesOnly === true) {
+      // 使用正则表达式检查是否为豆瓣图片
+      const isDoubanImage = DOUBAN_IMAGE_REGEX.test(imageUrl);
+
+      // 如果不是豆瓣图片,直接重定向到原图
+      if (!isDoubanImage) {
+        return NextResponse.redirect(imageUrl, 302);
+      }
+    }
+
     const imageResponse = await fetch(imageUrl, {
       headers: {
         Referer: 'https://movie.douban.com/',
