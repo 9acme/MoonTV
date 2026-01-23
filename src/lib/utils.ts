@@ -37,6 +37,22 @@ export function processImageUrl(originalUrl: string): string {
   const proxyUrl = getImageProxyUrl();
   if (!proxyUrl) return originalUrl;
 
+  // 检查是否启用了"只代理豆瓣图片"
+  const proxyDoubanImagesOnly = localStorage.getItem('proxyDoubanImagesOnly');
+  if (
+    proxyDoubanImagesOnly !== null &&
+    (JSON.parse(proxyDoubanImagesOnly) as boolean)
+  ) {
+    // 只代理豆瓣图片，检查是否为豆瓣图片域名
+    const isDoubanImage = /^https?:\/\/([^/]+\.)?doubanio\.com\//i.test(
+      originalUrl
+    );
+    if (!isDoubanImage) {
+      // 不是豆瓣图片，直接返回原始URL
+      return originalUrl;
+    }
+  }
+
   return `${proxyUrl}${encodeURIComponent(originalUrl)}`;
 }
 

@@ -31,6 +31,7 @@ export const UserMenu: React.FC = () => {
   const [enableOptimization, setEnableOptimization] = useState(true);
   const [enableImageProxy, setEnableImageProxy] = useState(false);
   const [enableDoubanProxy, setEnableDoubanProxy] = useState(false);
+  const [proxyDoubanImagesOnly, setProxyDoubanImagesOnly] = useState(false);
 
   // 修改密码相关状态
   const [newPassword, setNewPassword] = useState('');
@@ -105,6 +106,13 @@ export const UserMenu: React.FC = () => {
         localStorage.getItem('enableOptimization');
       if (savedEnableOptimization !== null) {
         setEnableOptimization(JSON.parse(savedEnableOptimization));
+      }
+
+      const savedProxyDoubanImagesOnly = localStorage.getItem(
+        'proxyDoubanImagesOnly'
+      );
+      if (savedProxyDoubanImagesOnly !== null) {
+        setProxyDoubanImagesOnly(JSON.parse(savedProxyDoubanImagesOnly));
       }
     }
   }, []);
@@ -260,6 +268,13 @@ export const UserMenu: React.FC = () => {
     }
   };
 
+  const handleProxyDoubanImagesOnlyToggle = (value: boolean) => {
+    setProxyDoubanImagesOnly(value);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('proxyDoubanImagesOnly', JSON.stringify(value));
+    }
+  };
+
   const handleResetSettings = () => {
     const defaultImageProxy = (window as any).RUNTIME_CONFIG?.IMAGE_PROXY || '';
     const defaultDoubanProxy =
@@ -271,6 +286,7 @@ export const UserMenu: React.FC = () => {
     setEnableDoubanProxy(!!defaultDoubanProxy);
     setEnableImageProxy(!!defaultImageProxy);
     setImageProxyUrl(defaultImageProxy);
+    setProxyDoubanImagesOnly(false);
 
     if (typeof window !== 'undefined') {
       localStorage.setItem('defaultAggregateSearch', JSON.stringify(true));
@@ -285,6 +301,7 @@ export const UserMenu: React.FC = () => {
         JSON.stringify(!!defaultImageProxy)
       );
       localStorage.setItem('imageProxyUrl', defaultImageProxy);
+      localStorage.setItem('proxyDoubanImagesOnly', JSON.stringify(false));
     }
   };
 
@@ -613,6 +630,43 @@ export const UserMenu: React.FC = () => {
               onChange={(e) => handleImageProxyUrlChange(e.target.value)}
               disabled={!enableImageProxy}
             />
+          </div>
+
+          {/* 只代理豆瓣图片开关 */}
+          <div className='flex items-center justify-between'>
+            <div>
+              <h4 className='text-sm font-medium text-gray-700 dark:text-gray-300'>
+                只代理豆瓣图片
+              </h4>
+              <p className='text-xs text-gray-500 dark:text-gray-400 mt-1'>
+                启用后，仅对豆瓣图片使用代理，其他图片直接访问
+              </p>
+            </div>
+            <label className='flex items-center cursor-pointer'>
+              <div className='relative'>
+                <input
+                  type='checkbox'
+                  className='sr-only peer'
+                  checked={proxyDoubanImagesOnly}
+                  onChange={(e) =>
+                    handleProxyDoubanImagesOnlyToggle(e.target.checked)
+                  }
+                  disabled={!enableImageProxy}
+                />
+                <div
+                  className={`w-11 h-6 rounded-full transition-colors ${
+                    enableImageProxy
+                      ? 'bg-gray-300 peer-checked:bg-green-500 dark:bg-gray-600'
+                      : 'bg-gray-200 dark:bg-gray-700 cursor-not-allowed'
+                  }`}
+                ></div>
+                <div
+                  className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform peer-checked:translate-x-5 ${
+                    !enableImageProxy ? 'opacity-50' : ''
+                  }`}
+                ></div>
+              </div>
+            </label>
           </div>
         </div>
 
